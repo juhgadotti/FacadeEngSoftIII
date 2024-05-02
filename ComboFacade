@@ -1,0 +1,108 @@
+using System;
+using System.Collections.Generic;
+
+class Produto
+{
+    public string Descricao { get; }
+    public double Preco { get; }
+
+    public Produto(string descricao, double preco)
+    {
+        Descricao = descricao;
+        Preco = preco;
+    }
+}
+
+class Sanduiche : Produto
+{
+    public int Gramas { get; }
+
+    public Sanduiche(string descricao, double preco, int gramas) : base(descricao, preco)
+    {
+        Gramas = gramas;
+    }
+}
+
+class Sobremesa : Produto
+{
+    public string Tamanho { get; }
+
+    public Sobremesa(string descricao, double preco, string tamanho) : base(descricao, preco)
+    {
+        Tamanho = tamanho;
+    }
+}
+
+class Bebida : Produto
+{
+    public int Ml { get; }
+
+    public Bebida(string descricao, double preco, int ml) : base(descricao, preco)
+    {
+        Ml = ml;
+    }
+}
+
+
+class Combo
+{
+    private Sanduiche sanduiche;
+    private Sobremesa sobremesa;
+    private Bebida bebida;
+
+    public void CriarComboCheddar()
+    {
+        sanduiche = new Sanduiche("Cheddar", 15, 120);
+        sobremesa = new Sobremesa("Sorvete", 5, "Médio");
+        bebida = new Bebida("Refrigerante", 6, 300);
+    }
+
+    public void CriarComboFrango()
+    {
+        sanduiche = new Sanduiche("Frango", 20, 200);
+        sobremesa = new Sobremesa("Cookie", 5, "Medio");
+        bebida = new Bebida("Suco", 7, 320);
+    }
+
+    public string ExibirItensCombo()
+    {
+        string itensCombo = $"Combo:\n" +
+                            $"Sanduíche: {sanduiche.Descricao} - {sanduiche.Gramas}g\n" +
+                            $"Sobremesa: {sobremesa.Descricao} - {sobremesa.Tamanho}\n" +
+                            $"Bebida: {bebida.Descricao} - {bebida.Ml}ml\n" +
+                            $"O valor final é d R$: {CalcularPrecoTotal()}";
+        return itensCombo;
+    }
+    public double CalcularPrecoTotal() //fiz uma classe para calcular o preco do combo
+    {
+        double precoTotal = sanduiche.Preco + sobremesa.Preco + bebida.Preco;
+        double desconto = precoTotal * 0.1; // inseri um desconto por ser combo
+        return precoTotal - desconto;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Combo combo = new Combo();
+
+        Console.WriteLine("Qual combo deseja?\n1 - Combo Cheddar\n2 - Combo Frango");
+        int escolha = int.Parse(Console.ReadLine());
+
+        switch (escolha)
+        {
+            case 1:
+                combo.CriarComboCheddar();
+                break;
+            case 2:
+                combo.CriarComboFrango();
+                break;
+            default:
+                Console.WriteLine("Escolha inválida!");
+                return;
+        }
+
+        Console.WriteLine(combo.ExibirItensCombo());
+    }
+}
